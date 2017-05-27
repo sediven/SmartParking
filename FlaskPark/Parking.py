@@ -15,12 +15,15 @@ class Parking(object):
             wynik += len(i)
         return wynik
 
+    def getTab(self):
+        return [[str(e.getSpaceStatus()) for e in row] for row in self.parkingPlaces]
+
     def printMe(self):
         s = [[str(e.getSpaceStatus()) for e in row] for row in self.parkingPlaces]
-        lens = [max(map(len, col)) for col in zip(*s)]
-        fmt = ''.join('{{:{}}}'.format(x) for x in lens)
-        table = [fmt.format(*row) for row in s]
-        return '\n'.join(table)
+        # lens = [max(map(len, col)) for col in zip(*s)]
+        # fmt = ''.join('{{:{}}}'.format(x) for x in lens)
+        # table = [fmt.format(*row) for row in s]
+        return s
 
     def buildRoades(self):
         for row in range(self.rows):
