@@ -13,8 +13,8 @@ class ParserInput(object):
     def giveMeJson(self, dictionary):
         return json.dumps(dictionary, sort_keys=True, separators=(',', ': '))
 
-    def giveMeDict(self, stringi):
-        return json.loads(stringi)
+    # def giveMeDict(self, stringi):
+    #     return json.loads(stringi)
 
     def orderByDate(self, dic):
         return sorted(dic.items(), key=lambda x: x[1]['dataNow'])
@@ -35,7 +35,8 @@ class ParserInput(object):
         return cars
 
     def parseMyLines(self):
-        self.dictLines = self.orderByDate(dictLines)
+        self.dictLines = self.orderByDate(self.lines)
+
 
     def doNextEvent(self):
         event = self.dictLines.pop(0)
