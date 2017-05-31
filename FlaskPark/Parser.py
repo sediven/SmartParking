@@ -35,7 +35,6 @@ class ParserInput(object):
         return cars
 
     def parseMyLines(self):
-        dictLines = self.giveMeDict(self.lines)
         self.dictLines = self.orderByDate(dictLines)
 
     def doNextEvent(self):
