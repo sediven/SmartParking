@@ -72,7 +72,7 @@ def it_is_event_time():
 @cross_origin()
 def do_event():
     type, event = events[0].doNextEvent()
-    car = [c for c in cars if c.getCarId() == event[1]['car']['carId']][0]
+    car = [c for c in events[0].manageCars() if c.getCarId() == event[1]['car']['carId']][0]
     if type:
         path = parkings[0].parkCar(car)
     else:
