@@ -7,6 +7,8 @@ class Car(object):
     __owner = False
     __carId = False
     __outTime = False
+    __w = False
+    __k = False
 
     def __init__(self, __carId, __owner, __inTime, __outTime):
         self.__carId = __carId
@@ -35,3 +37,9 @@ class Car(object):
     def takeCar(self):
         self.__w = -1
         self.__k = -1
+
+    def changeOutTime(self, time):
+        self.__outTime = time
+
+    def changeInTime(self, time):
+        self.__inTime = time

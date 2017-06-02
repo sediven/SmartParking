@@ -9,7 +9,6 @@ CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 # https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
 
-cars = []
 events_example = '{"eventId": {"car": {"carId": "1","dataOut": "2017-04-22 17:13:25","owner": "tata"},"dataNow": "2017-04-22 14:15:25","typ": "in"},"eventId2": {"car": {"carId": "1","dataIn": "2017-04-22 14:13:25","owner": "tata"},"dataNow": "2017-04-22 11:13:25","typ": "out"},"eventId3": {"car": {"carId": "1","dataIn": "2017-04-22 14:13:25","owner": "tata"},"dataNow": "2017-04-22 13:13:25","typ": "out"}}'
 parkings = []
 events = []
@@ -53,12 +52,10 @@ def new_parking():
 def give_events():
     if not request.json:
         abort(400)
-    events.append( ParserInput(request.json))
     try:
-        events[0].parseMyLines()
+        events.append( ParserInput(request.json))
     except:
         abort(401)
-    cars = events[0].manageCars()
     return jsonify({'parking': parkings[0].printMe(), 'id': 0}), 201
 
 
@@ -71,13 +68,14 @@ def it_is_event_time():
 @app.route('/do_next_event', methods=['GET'])
 @cross_origin()
 def do_event():
-    type, event = events[0].doNextEvent()
-    car = [c for c in events[0].manageCars() if c.getCarId() == event[1]['car']['carId']][0]
-    if type:
+    type_is_out, event = events[0].doNextEvent()
+    if event:
+        car = [c for c in events[0].cars if c.getCarId() == event[1]['car']['carId']][0]
+    if not type_is_out:
         path = parkings[0].parkCar(car)
     else:
         path = parkings[0].takeCar(car)
-    return jsonify({'event': path, 'parking': parkings[0].printMe()}), 201
+    return jsonify({'path': path, 'parking': parkings[0].printMe()}), 201
 
 
 @app.route('/')

@@ -6,21 +6,19 @@ class ParserInput(object):
         format wydarzeń
         Zarzadzamy wydarzeniami
     """
-
+    cars = []
     def __init__(self, lines):
         self.lines = lines
+        self.parseMyLines()
+        self.manageCars()
 
     def giveMeJson(self, dictionary):
         return json.dumps(dictionary, sort_keys=True, separators=(',', ': '))
-
-    # def giveMeDict(self, stringi):
-    #     return json.loads(stringi)
 
     def orderByDate(self, dic):
         return sorted(dic.items(), key=lambda x: x[1]['dataNow'])
 
     def manageCars(self):
-        cars = []
         for i in self.dictLines:
             i = i[1]
             idk = i['car']['carId']
@@ -28,11 +26,8 @@ class ParserInput(object):
             if i['typ'] == 'in':
                 out = i['car']['dataOut']
                 inp = i['dataNow']
-            elif i['typ'] == 'out':
-                inp = i['car']['dataIn']
-                out = i['dataNow']
-            cars.append(Car(idk, owner, inp, out))
-        return cars
+                self.cars.append(Car(idk, owner, inp, out))
+
 
     def parseMyLines(self):
         self.dictLines = self.orderByDate(self.lines)
@@ -41,11 +36,15 @@ class ParserInput(object):
     def doNextEvent(self):
         event = self.dictLines.pop(0)
         try:
-            ind = event[1]['car']['dataIn']
+            #ma out znaczy że wjeżdża z przewidywaną data wyjazdu
+            ind = event[1]['car']['dataOut']
             return (0,event)
         except:
-            out =  event[1]['car']['dataOut']
+            out = event[1]['dataNow']
             return (1, event)
 
     def getNextEvent(self):
-        return self.dictLines.__getitem__(0)[1]['dataNow']
+        try:
+            return self.dictLines.__getitem__(0)[1]['dataNow']
+        except:
+            return False

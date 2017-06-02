@@ -1,5 +1,5 @@
 from ParkingSpace import Space
-
+from math import floor
 class Parking(object):
     def __init__(self, rows, colums):
         self.rows = rows
@@ -58,8 +58,6 @@ class Parking(object):
 
     def findPlace(self, car):
         time_inside = car.getTimeInside()
-        print
-        time_inside
         if time_inside >= 8:
             place = self.findEndPlace()
         elif time_inside >= 4:
@@ -77,8 +75,9 @@ class Parking(object):
         return False
 
     def findMiddlePlace(self):
-        lista = self.orderedPlaces.keys()
-        for i in lista[len(lista) / 3:]:
+        lista = list(self.orderedPlaces.keys())
+
+        for i in lista[floor(len(lista) / 3):]:
             if not len(self.orderedPlaces[i]):
                 self.orderedPlaces.pop(i)
             else:
